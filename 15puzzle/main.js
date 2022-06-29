@@ -27,7 +27,8 @@ $(document).ready(function () {
   // estar disponível para se mover ou não
   $(".cards-wrapper").hover(
     function () {
-      coord = getCoord($(this));
+      let coord = getCoord($(this));
+      
       if (allowedMove(coord.col, coord.row)) {
         $(this).addClass("available-card");
       } else {
@@ -42,7 +43,7 @@ $(document).ready(function () {
   $(".cards-wrapper").click(newFunctionCLICOU());
   //$(".cards-wrpper").makeMove
 });
-
+// teste 3
 function newFunctionCLICOU() {
   return function () {
     // define o estado inicial
