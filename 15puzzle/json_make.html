@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h2>Usando o XMLHttpRequest Object</h2>
+
+    <div id="demo">
+        <button type="button" onclick="loadXMLDoc()">Teste o Hook Json</button>
+    </div>
+
+    <script>
+        let conta=200;
+        function loadXMLDoc() {
+            
+            // Creating a XHR object
+            let xhr = new XMLHttpRequest();
+
+            let url = "https://hook.us1.make.com/57bjoxqvwthyy8ve3r27dacu41z3jjsk";
+
+            // open a connection
+            xhr.open("POST", url, true);
+
+            // Set the request header i.e. which type of content you are sending
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // Converting JSON data to string
+            var data = JSON.stringify({ "Cliente": "Cliente teste", "Tempo":  conta++ });
+            console.log("data: " + data);
+
+            // Create a state change callback
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+
+                    // Print received data from server
+                    console.log(this.responseText);
+                } else {
+                    console.log("Erro - falhou 'xhr.readyState'=" + xhr.readyState + ' xhr.status=' + xhr.status);
+                    console.log(this.responseText);
+
+                }
+                
+            }
+
+            // Sending data with the request
+
+            xhr.send(data);
+
+        }
+    </script>
+
+</body>
+
+</html>
