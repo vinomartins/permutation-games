@@ -1,17 +1,26 @@
-$('document').ready(function(){
-  game.setup()
+// pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14', '15','12']
+// pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
+
+endOfGameBoxClass = ".formdiv";
+
+
+$('document').ready(function(){  
+  game.setup() // inicia na posição de resolvido
 
 // deveria estar dentro do .ready?
   $(".cards-wrapper").click(function () {
     allowed = game.allowedMove($(this))
     if (allowed){
-     game.makeMove($(this),allowed);
+      game.makeMove($(this),allowed);
 }});
 
   $(".cards-wrapper").hover(function(){
-    if (game.allowedMove($(this))){
+    id = $(this).attr("id").slice(-2);
+    if (id == '00')
+      return;
+    else if (game.allowedMove($(this))){
       $(this).addClass("available-card");
-    } else{
+    } else {
       $(this).addClass("unavailable-card");
     }
   },function(){
@@ -24,19 +33,20 @@ let game = {
   solvedPosition: ['01','02','03','04','05','06','07','08',
                     '09','10','11', '12', '13', '14', '15','00'],
   
-  currentStatus: this.solvedPosition,
+  currentStatus: undefined, //this.solvedPosition,
 
-  setup: function(){
+  setup (position = this.solvedPosition){
     // Inicia o jogo na posição resolvida
     // TODO: permitir posição embaralhada
-    this.writePosition(this.solvedPosition)
+    this.writePosition(position, true)
+    this.restartTimer();
   },
 
-  startGame: function(){
-    // TODO: implementar quando tiver o timer
+  startGame (){
+    // TODO: implementar quando tiver o timer OU colocar no setup
   },
 
-  writePosition: function (status = this.solvedPosition){
+  writePosition (status = this.solvedPosition,firstTime = false){
     // mudar no html e no currentStatus
     // tentar deixar toda interação com o css aqui!
 
@@ -50,13 +60,16 @@ let game = {
       $("#card-"+status[i]).css('grid-area',gridAreaAttr)
 
     }
-    this.currentStatus = status;
+    this.currentStatus = status.slice(); // .slice() usado para clonar o array
+    if (!firstTime){
+      this.solved()
+    }
   },
   
-  readPosition: function(){
+  readPosition (){
     
   },
-  allowedMove: function(card){
+  allowedMove (card){
     id = card.attr('id').slice(-2)
     currentCard = this.currentStatus.indexOf(id);
     emptyCard = this.currentStatus.indexOf('00');
@@ -67,13 +80,26 @@ let game = {
     }
   },
 
-  makeMove: function(card,position){
+  makeMove (card,position){
     id = card.attr("id").slice(-2);
     currentCard = this.currentStatus.indexOf(id);
     emptyCard = this.currentStatus.indexOf("00");
     this.currentStatus[emptyCard] = id;
     this.currentStatus[currentCard] = "00";
     this.writePosition(this.currentStatus);
+  },
+
+  solved (){
+    if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
+      console.log('Conseguiu!')
+    
+    $(endOfGameBoxClass).removeClass("hidden")
+      // $(".end-of-game").removeClass('hidden');
+    }
+  },
+
+  restartTimer: function(){
+
   }
 }
 
@@ -81,6 +107,6 @@ function coordFromList(index,size = 4){
   // retorna linha e coluna de acordo com índice
   let colJS = index % size;
   let rowJS = (index - colJS)/size;
+  // +1 para ficar com o índice do CSS
   return [rowJS+1,colJS+1];
 }
-
