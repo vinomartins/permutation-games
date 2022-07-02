@@ -181,10 +181,10 @@ a.link {
 }
 
 
-.formdiv{
+.PopUpSubmit{
   border-style: solid;
 }
 
-.formdiv.hidden {
+.PopUpSubmit.hidden {
   display:none
 }

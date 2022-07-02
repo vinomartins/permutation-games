@@ -1,7 +1,7 @@
-// pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14', '15','12']
-// pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
+pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14', '15','12']
+pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
 
-endOfGameBoxClass = ".formdiv";
+endOfGameBoxClass = ".PopUpSubmit"; // mudar o nome no index
 
 
 $('document').ready(function(){  
@@ -12,7 +12,9 @@ $('document').ready(function(){
     allowed = game.allowedMove($(this))
     if (allowed){
       game.makeMove($(this),allowed);
-}});
+      game.solved()
+    }
+  });
 
   $(".cards-wrapper").hover(function(){
     id = $(this).attr("id").slice(-2);
@@ -46,9 +48,9 @@ let game = {
     // TODO: implementar quando tiver o timer OU colocar no setup
   },
 
-  writePosition (status = this.solvedPosition,firstTime = false){
-    // mudar no html e no currentStatus
-    // tentar deixar toda interação com o css aqui!
+  writePosition (status = this.solvedPosition){
+    /* Recebe 
+    */
 
     for (let i = 0; i < 16; i++){
       // Indexação do CSS (inicia do 1)
@@ -61,9 +63,7 @@ let game = {
 
     }
     this.currentStatus = status.slice(); // .slice() usado para clonar o array
-    if (!firstTime){
-      this.solved()
-    }
+    
   },
   
   readPosition (){
@@ -93,8 +93,7 @@ let game = {
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
       console.log('Conseguiu!')
     
-    $(endOfGameBoxClass).removeClass("hidden")
-      // $(".end-of-game").removeClass('hidden');
+    $(endOfGameBoxClass).removeClass("hide")
     }
   },
 
