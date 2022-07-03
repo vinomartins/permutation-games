@@ -5,37 +5,16 @@ endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
 
 
 $('document').ready(function(){  
-  game.setup() // inicia na posição de resolvido
-
-// deveria estar dentro do .ready?
-  $(".cards-wrapper").click(function () {
-    allowed = game.allowedMove($(this))
-    if (allowed){
-      game.makeMove($(this),allowed);
-      game.solved()
-    }
-  });
-
-  $(".cards-wrapper").hover(function(){
-    id = $(this).attr("id").slice(-2);
-    if (id == '00')
-      return;
-    else if (game.allowedMove($(this))){
-      $(this).addClass("available-card");
-    } else {
-      $(this).addClass("unavailable-card");
-    }
-  },function(){
-    $(this).removeClass("available-card unavailable-card")
-  })
-
+  game.setup() 
+  game.play();
+  checkHover();
 })
 
 let game = {
   solvedPosition: ['01','02','03','04','05','06','07','08',
                     '09','10','11', '12', '13', '14', '15','00'],
   
-  currentStatus: undefined, //this.solvedPosition,
+  currentStatus: undefined,
 
   setup (position = this.solvedPosition){
     // Inicia o jogo na posição resolvida
@@ -49,7 +28,8 @@ let game = {
   },
 
   writePosition (status = this.solvedPosition){
-    /* Recebe 
+    /* Recebe o array de posição e 
+    muda na pagina via o grid-area do css.  
     */
 
     for (let i = 0; i < 16; i++){
@@ -97,8 +77,17 @@ let game = {
     }
   },
 
-  restartTimer: function(){
+  restartTimer (){
+  },
 
+  play (){
+    $(".cards-wrapper").click(function () {
+      allowed = game.allowedMove($(this));
+      if (allowed) {
+        game.makeMove($(this), allowed);
+        game.solved();
+      }
+    });
   }
 }
 
@@ -108,4 +97,19 @@ function coordFromList(index,size = 4){
   let rowJS = (index - colJS)/size;
   // +1 para ficar com o índice do CSS
   return [rowJS+1,colJS+1];
+}
+
+function checkHover(){
+  $(".cards-wrapper").hover(function () { // mouse on
+      id = $(this).attr("id").slice(-2);
+      if (id == "00") return;
+      else if (game.allowedMove($(this))) {
+        $(this).addClass("available-card");
+      } else {
+        $(this).addClass("unavailable-card");
+      }
+    }, function () { // mouse off
+      $(this).removeClass("available-card unavailable-card");
+    }
+  );
 }
