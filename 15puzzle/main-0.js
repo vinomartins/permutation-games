@@ -1,14 +1,17 @@
 pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14', '15','12']
 pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
 
-endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
-closeButtonClass = ".close-button";// mudar o nome no index
+const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
+const closeButtonClass = ".close-button";// mudar o nome no index
+const timerClass = ".timer-text";
+
+let start = undefined;
 
 $('document').ready(function(){  
   game.setup() 
   game.play();
   checkHover();
-  listeners();
+  listeners(); // encapsular os listeners aqui?
 })
 
 let game = {
@@ -24,7 +27,8 @@ let game = {
     this.running = true;
     this.writePosition(position);
     this.currentStatus = position.slice();
-    this.restartTimer();
+    start = new Date();
+
   },
 
   startGame (){
@@ -73,9 +77,12 @@ let game = {
 
   solved (){
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
-      console.log('Conseguiu!');
-      $(endOfGameBoxClass).removeClass("hide");
+      // $(endOfGameBoxClass).removeClass("hide");
+      $(endOfGameBoxClass).toggle(300);
       this.running = false;
+      clearInterval(this.interval);
+      this.solvingTime = Math.round((new Date() - start)/1000);
+      console.log(this.solvingTime);
     }
   },
 
@@ -88,6 +95,7 @@ let game = {
       if (allowed) {
         game.makeMove($(this));
         game.solved();
+        console.table(game)
       }
     });
   }
@@ -97,7 +105,7 @@ function coordFromList(index,size = 4){
   // retorna linha e coluna de acordo com índice
   let colJS = index % size;
   let rowJS = (index - colJS)/size;
-  // +1 para ficar com o índice do CSS
+  // +1 para ficar com o índice do CWave Function CollapseSS
   return [rowJS+1,colJS+1];
 }
 
@@ -119,7 +127,11 @@ function checkHover(){
 function listeners(){
   // Fechar o popup-submit após clicar no X
   $(closeButtonClass).click(function(){
-    $(endOfGameBoxClass).addClass("hide");
+    // $(endOfGameBoxClass).addClass("hide");
+    $(endOfGameBoxClass).toggle(1000)
   });
-
+  // atualiza o timer 
+  game.interval = setInterval(function () {
+    $(timerClass).text(Math.round((new Date() - start) / 1000) + " Seconds",1000);
+  });
 }

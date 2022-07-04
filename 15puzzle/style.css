@@ -194,4 +194,5 @@ a.link {
   /* position: fixed; */
   right: 30px;
   background-color: red;
+  cursor: pointer;
 }
