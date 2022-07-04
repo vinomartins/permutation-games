@@ -183,8 +183,15 @@ a.link {
 
 .popupsubmit{
   border-style: solid;
+  display: block;
 }
 
 .popupsubmit.hide {
-  display:none
+  display:none;
+}
+
+.close-button{
+  /* position: fixed; */
+  right: 30px;
+  background-color: red;
 }

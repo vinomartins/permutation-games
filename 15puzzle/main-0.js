@@ -2,12 +2,13 @@ pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14'
 pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
 
 endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
-
+closeButtonClass = ".close-button";// mudar o nome no index
 
 $('document').ready(function(){  
   game.setup() 
   game.play();
   checkHover();
+  listeners();
 })
 
 let game = {
@@ -15,11 +16,14 @@ let game = {
                     '09','10','11', '12', '13', '14', '15','00'],
   
   currentStatus: undefined,
+  running: undefined,
 
   setup (position = this.solvedPosition){
     // Inicia o jogo na posição resolvida
     // TODO: permitir posição embaralhada
-    this.writePosition(position, true)
+    this.running = true;
+    this.writePosition(position);
+    this.currentStatus = position.slice();
     this.restartTimer();
   },
 
@@ -41,14 +45,12 @@ let game = {
       
       $("#card-"+status[i]).css('grid-area',gridAreaAttr)
 
-    }
-    this.currentStatus = status.slice(); // .slice() usado para clonar o array
+    };
+    // this.currentStatus = status.slice(); // .slice() usado para clonar o array
     
   },
   
-  readPosition (){
-    
-  },
+  
   allowedMove (card){
     id = card.attr('id').slice(-2)
     currentCard = this.currentStatus.indexOf(id);
@@ -60,7 +62,7 @@ let game = {
     }
   },
 
-  makeMove (card,position){
+  makeMove (card){
     id = card.attr("id").slice(-2);
     currentCard = this.currentStatus.indexOf(id);
     emptyCard = this.currentStatus.indexOf("00");
@@ -71,9 +73,9 @@ let game = {
 
   solved (){
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
-      console.log('Conseguiu!')
-    
-    $(endOfGameBoxClass).removeClass("hide")
+      console.log('Conseguiu!');
+      $(endOfGameBoxClass).removeClass("hide");
+      this.running = false;
     }
   },
 
@@ -84,7 +86,7 @@ let game = {
     $(".cards-wrapper").click(function () {
       allowed = game.allowedMove($(this));
       if (allowed) {
-        game.makeMove($(this), allowed);
+        game.makeMove($(this));
         game.solved();
       }
     });
@@ -112,4 +114,12 @@ function checkHover(){
       $(this).removeClass("available-card unavailable-card");
     }
   );
+}
+
+function listeners(){
+  // Fechar o popup-submit após clicar no X
+  $(closeButtonClass).click(function(){
+    $(endOfGameBoxClass).addClass("hide");
+  });
+
 }
