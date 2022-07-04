@@ -77,8 +77,8 @@ let game = {
 
   solved (){
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
-      // $(endOfGameBoxClass).removeClass("hide");
-      $(endOfGameBoxClass).toggle(300);
+      $(endOfGameBoxClass).removeClass("hide");
+      // $(endOfGameBoxClass).toggle(300);
       this.running = false;
       clearInterval(this.interval);
       this.solvingTime = Math.round((new Date() - start)/1000);
@@ -95,7 +95,6 @@ let game = {
       if (allowed) {
         game.makeMove($(this));
         game.solved();
-        console.table(game)
       }
     });
   }
@@ -127,11 +126,15 @@ function checkHover(){
 function listeners(){
   // Fechar o popup-submit após clicar no X
   $(closeButtonClass).click(function(){
-    // $(endOfGameBoxClass).addClass("hide");
-    $(endOfGameBoxClass).toggle(1000)
+    $(endOfGameBoxClass).addClass("hide");
+    // $(endOfGameBoxClass).toggle(1000)
   });
   // atualiza o timer 
   game.interval = setInterval(function () {
-    $(timerClass).text(Math.round((new Date() - start) / 1000) + " Seconds",1000);
-  });
+    segundos = Math.round((new Date() - start) / 1000);
+    gamingTime = new Date(0,0,0,0,0,segundos);
+    options = {minute:"2-digit", second:"2-digit"}
+    out = gamingTime.toLocaleDateString("en-US", options).slice(-5)
+    $(timerClass).text(out);
+  },1000);
 }
