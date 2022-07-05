@@ -129,6 +129,7 @@ function listeners(){
   // Fechar o popup-submit após clicar no X
   $(closeButtonClass).click(function(){
     $(endOfGameBoxClass).addClass("hide");
+    formSubmit();
     // $(endOfGameBoxClass).toggle(1000)
   });
 
