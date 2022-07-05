@@ -2,12 +2,12 @@ pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14'
 pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
 
 const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
-const closeButtonClass = ".close-button";// mudar o nome no index
+const closeButtonClass = "#submitbuttontest";// mudar o nome no index
 const timerClass = ".timer-text";
 const submitPopUpTime = ".totaltime";
-const formNameInput = "#fname";
-const formSlugInput = "#fslug";
-const formTimeInput = "#ftime";
+const formNameInput = "#namefield";
+const formSlugInput = "#slugfield";
+const formTimeInput = "#timefield";
 
 let start = undefined;
 
