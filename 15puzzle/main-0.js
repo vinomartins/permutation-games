@@ -3,8 +3,8 @@ pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15'
 
 const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
 const closeButtonClass = ".close-button";// mudar o nome no index
-const timerClass = ".totaltime";
-const submitPopUpTime = ".submitpopuptempo";
+const timerClass = ".timer-text";
+const submitPopUpTime = ".totaltime";
 const formNameInput = "#fname";
 const formSlugInput = "#fslug";
 const formTimeInput = "#ftime";
@@ -155,9 +155,8 @@ function listeners(){
     segundos = Math.round((new Date() - start) / 1000);
     gamingTime = new Date(0,0,0,0,0,segundos);
     options = {minute:"2-digit", second:"2-digit"}
-    out = gamingTime.toLocaleDateString("en-US", options).slice(-5)
-    game.prettyTime = out;
-    $(timerClass).text(out);
+    game.prettyTime = gamingTime.toLocaleDateString("en-US", options).slice(-5);
+    $(timerClass).text(game.prettyTime);
   },1000);
 
   // clica no botao do form
