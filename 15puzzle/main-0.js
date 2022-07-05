@@ -129,6 +129,7 @@ function listeners(){
   // Fechar o popup-submit após clicar no X
   $(closeButtonClass).click(function(){
     $(endOfGameBoxClass).addClass("hide");
+    // fazer isso apenas se o nome não estiver vazio
     formSubmit();
     // $(endOfGameBoxClass).toggle(1000)
   });
@@ -158,12 +159,5 @@ function listeners(){
     options = {minute:"2-digit", second:"2-digit"}
     game.prettyTime = gamingTime.toLocaleDateString("en-US", options).slice(-5);
     $(timerClass).text(game.prettyTime);
-  },1000);
-
-  // clica no botao do form
-  $("#fsubmit").click(function(){
-    formSubmit();
-    // ...
-  })
-   
+  },1000);   
 }
