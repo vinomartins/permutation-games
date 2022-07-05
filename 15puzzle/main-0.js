@@ -3,14 +3,17 @@ pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15'
 
 const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
 const closeButtonClass = ".close-button";// mudar o nome no index
-const timerClass = ".timer-text";
+const timerClass = ".totaltime";
+const submitPopUpTime = ".submitpopuptempo";
+const formNameInput = "#fname";
+const formSlugInput = "#fslug";
+const formTimeInput = "#ftime";
 
 let start = undefined;
 
 $('document').ready(function(){  
   game.setup() 
   game.play();
-  checkHover();
   listeners(); // encapsular os listeners aqui?
 })
 
@@ -20,6 +23,7 @@ let game = {
   
   currentStatus: undefined,
   running: undefined,
+  prettyTime: undefined,
 
   setup (position = this.solvedPosition){
     // Inicia o jogo na posição resolvida
@@ -77,12 +81,15 @@ let game = {
 
   solved (){
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
-      $(endOfGameBoxClass).removeClass("hide");
-      // $(endOfGameBoxClass).toggle(300);
       this.running = false;
       clearInterval(this.interval);
-      this.solvingTime = Math.round((new Date() - start)/1000);
-      console.log(this.solvingTime);
+      this.solvingTime = Math.round((new Date() - start) / 1000);
+
+      // Adiciona o tempo no popup submit
+      // talvez o texto inteiro
+      $(submitPopUpTime).text(game.prettyTime);
+      $(endOfGameBoxClass).removeClass("hide");
+ 
     }
   },
 
@@ -100,6 +107,15 @@ let game = {
   }
 }
 
+function formSubmit(){
+  userName = $(formNameInput).val();
+  userSlug = userName.replaceAll(/\s+/gi, "-");
+  userTime = game.solvingTime;
+  console.log(userName +
+    '\n' + userSlug +
+    '\n' + userTime);
+}
+
 function coordFromList(index,size = 4){
   // retorna linha e coluna de acordo com índice
   let colJS = index % size;
@@ -108,20 +124,6 @@ function coordFromList(index,size = 4){
   return [rowJS+1,colJS+1];
 }
 
-function checkHover(){
-  $(".cards-wrapper").hover(function () { // mouse on
-      id = $(this).attr("id").slice(-2);
-      if (id == "00") return;
-      else if (game.allowedMove($(this))) {
-        $(this).addClass("available-card");
-      } else {
-        $(this).addClass("unavailable-card");
-      }
-    }, function () { // mouse off
-      $(this).removeClass("available-card unavailable-card");
-    }
-  );
-}
 
 function listeners(){
   // Fechar o popup-submit após clicar no X
@@ -129,12 +131,39 @@ function listeners(){
     $(endOfGameBoxClass).addClass("hide");
     // $(endOfGameBoxClass).toggle(1000)
   });
+
+  // hover dos cards
+  $(".cards-wrapper").hover(
+    function () {
+      // mouse on
+      id = $(this).attr("id").slice(-2);
+      if (id == "00") return;
+      else if (game.allowedMove($(this))) {
+        $(this).addClass("available-card");
+      } else {
+        $(this).addClass("unavailable-card");
+      }
+    },
+    function () {
+      // mouse off
+      $(this).removeClass("available-card unavailable-card");
+    }
+  );
+
   // atualiza o timer 
   game.interval = setInterval(function () {
     segundos = Math.round((new Date() - start) / 1000);
     gamingTime = new Date(0,0,0,0,0,segundos);
     options = {minute:"2-digit", second:"2-digit"}
     out = gamingTime.toLocaleDateString("en-US", options).slice(-5)
+    game.prettyTime = out;
     $(timerClass).text(out);
   },1000);
+
+  // clica no botao do form
+  $("#fsubmit").click(function(){
+    formSubmit();
+    // ...
+  })
+   
 }
