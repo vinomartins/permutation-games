@@ -2,7 +2,9 @@ pos1 = ['01','02','00','03','05','06','07','04','09','10','11', '08', '13', '14'
 pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15', '14','00']
 
 const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
-const closeButtonClass = "#submitbuttontest";// mudar o nome no index
+const submitButtonClass = "#submitbuttontest";// mudar o nome no index
+const closeButtonClass = ".closeButtonForm";// mudar o nome no index
+
 const timerClass = ".timer-text";
 const submitPopUpTime = ".totaltime";
 const formNameInput = "#namefield";
@@ -137,10 +139,14 @@ function coordFromList(index,size = 4){
 
 function listeners(){
   // Fechar o popup-submit após clicar no X
-  $(closeButtonClass).click(function () {
+  $(submitButtonClass).click(function () {
     if ($(namefield).val()) {
       formSubmit();
     }
+    $(endOfGameBoxClass).addClass("hide");
+  });
+
+  $(closeButtonClass).click(function () {
     $(endOfGameBoxClass).addClass("hide");
   });
 
