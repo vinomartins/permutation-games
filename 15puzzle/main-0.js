@@ -113,6 +113,7 @@ function formSubmit(){
     userName: nome,
     userSlug: nome.replaceAll(/\s+/gi, "-"),
     userTime: game.solvingTime,
+    userPrettyTime: game.prettyTime,
   }
   $.ajax({
     url: "https://hook.us1.make.com/smwd9u54bvr4j2xq9fip7lfsr4rcb4du",
