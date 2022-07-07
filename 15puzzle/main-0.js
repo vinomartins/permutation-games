@@ -83,7 +83,7 @@ let game = {
     if (JSON.stringify(game.currentStatus) === JSON.stringify(game.solvedPosition)){
       this.running = false;
       clearInterval(this.interval);
-      this.solvingTime = Math.round((new Date() - start) / 1000);
+      this.solvingTime = Math.floor((new Date() - start) / 1000);
 
       // Adiciona o tempo no popup submit
       // talvez o texto inteiro
@@ -108,12 +108,20 @@ let game = {
 }
 
 function formSubmit(){
-  userName = $(formNameInput).val();
-  userSlug = userName.replaceAll(/\s+/gi, "-");
-  userTime = game.solvingTime;
-  console.log(userName +
-    '\n' + userSlug +
-    '\n' + userTime);
+  nome = $(formNameInput).val();
+  user = {
+    userName: nome,
+    userSlug: nome.replaceAll(/\s+/gi, "-"),
+    userTime: game.solvingTime,
+  }
+  $.ajax({
+    url: "https://hook.us1.make.com/smwd9u54bvr4j2xq9fip7lfsr4rcb4du",
+    type: "POST",
+    data: JSON.stringify(user),
+    contentType: "application/json",
+    complete: function() {console.log("requisição enviada")},
+  });
+  
 }
 
 function coordFromList(index,size = 4){
@@ -125,13 +133,14 @@ function coordFromList(index,size = 4){
 }
 
 
+
 function listeners(){
   // Fechar o popup-submit após clicar no X
-  $(closeButtonClass).click(function(){
+  $(closeButtonClass).click(function () {
+    if ($(namefield).val()) {
+      formSubmit();
+    }
     $(endOfGameBoxClass).addClass("hide");
-    // fazer isso apenas se o nome não estiver vazio
-    formSubmit();
-    // $(endOfGameBoxClass).toggle(1000)
   });
 
   // hover dos cards
