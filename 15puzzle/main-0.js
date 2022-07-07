@@ -3,7 +3,7 @@ pos2 = ['01','02','03','04','05','06','07','08','09','10','11', '12', '13', '15'
 
 const endOfGameBoxClass = ".popupsubmit"; // mudar o nome no index
 const submitButtonClass = "#submitbuttontest";// mudar o nome no index
-const closeButtonClass = ".closeButtonForm";// mudar o nome no index
+const closeButtonClass = ".closebuttonform";// mudar o nome no index
 
 const timerClass = ".timer-text";
 const submitPopUpTime = ".totaltime";
